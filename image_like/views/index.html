@@ -4,15 +4,84 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>image page</title>
 </head>
 <body>
-    <!-- {% block content %} -->
-        <!-- {{data}} -->
-        <!-- {% for i of data%}
-            <img src="{%}" alt="" srcset=""> -->
-    <!-- {% endblock %} -->
+    {% block content %}
+       
 
-    <p>hello world</p>
+          <div class="container">
+
+          </div>
+    {% endblock %}
+   <script>
+    window.onload = function(){
+        async function get_data(){
+            let data = await fetch("/data"); 
+            data =await data.json()
+            // console.log(data);
+            // data.json()
+            // console.log();
+            return data;
+        }
+
+       async function create_element(){
+            let data = await get_data();
+
+          console.log(data);
+
+
+          let img = document.querySelector('.container');
+            // console.log(img);
+            // let id = 1;
+            for(let obj of data){
+                let imgs  = document.createElement('img');
+                let button = document.createElement("button");
+                // console.log(obj.img_path);
+                imgs.src = obj.img_path;
+                img.width = 500+'px';
+                img.height = 500+'px';
+                button.innerHTML = obj.likes;
+                button.setAttribute('id',obj.id);
+                img.appendChild(imgs);
+                img.appendChild(button);
+                // id++;
+            }
+
+       }
+       async function getAllButtons(){
+            console.log(3);
+            await create_element();
+
+            let buttons =await  document.querySelectorAll('button');
+            await console.log(buttons);
+            for(let btn of buttons){
+                // console.log(btn.id);
+                btn.onclick =btnclick;
+            }
+
+
+    }
+
+       getAllButtons();
+
+       async function btnclick(event){
+        // console.log(event.target.id);
+         let btn_id = await event.target.id;
+
+         let result = await fetch("/liked", {
+            method:"POST",
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                btn_id
+            })
+         }).then((res)=>res.json())
+
+         console.log(result);
+       }
+    }
+   </script>
 </body>
 </html>

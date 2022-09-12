@@ -15,11 +15,5 @@ async function get_data(){
 
 }
 
-async function call(){
-    let d = await get_data();
-    // console.log(d);
-    // return d;
-    module.exports={d} 
-}
 
-call();
+module.exports = {get_data}
