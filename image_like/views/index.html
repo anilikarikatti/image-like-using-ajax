@@ -39,8 +39,8 @@
                 let button = document.createElement("button");
                 // console.log(obj.img_path);
                 imgs.src = obj.img_path;
-                img.width = 500+'px';
-                img.height = 500+'px';
+                img.style.width = 500+'px';
+                img.style.height = 500+'px';
                 button.innerHTML = obj.likes;
                 button.setAttribute('id',obj.id);
                 img.appendChild(imgs);
@@ -50,7 +50,6 @@
 
        }
        async function getAllButtons(){
-            console.log(3);
             await create_element();
 
             let buttons =await  document.querySelectorAll('button');
@@ -67,20 +66,29 @@
 
        async function btnclick(event){
         // console.log(event.target.id);
-         let btn_id = await event.target.id;
-
-         let result = await fetch("/liked", {
-            method:"POST",
-            headers:{
-                'Content-Type':'application/json'
-            },
-            body:JSON.stringify({
-                btn_id
+            let btn_id = await event.target.id;
+                // console.log(btn_id);
+            let result = await fetch("/liked", {
+                method:"post",
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({
+                    btn_id
+                })
             })
-         }).then((res)=>res.json())
-
-         console.log(result);
-       }
+            // .then ((res)=>res.json())
+            // console.log(result.status);
+            let re = await result.status;
+            if(re == 200){
+                let bt = await document.getElementById(btn_id);
+                let num = bt.innerHTML;
+                num =Number(num)
+                // console.log(typeof(num));
+                bt.innerHTML = num+=1;
+            }
+          
+        }
     }
    </script>
 </body>
